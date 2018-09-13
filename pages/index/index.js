@@ -28,7 +28,7 @@ Page({
       success: function (res) {
         var lat = res.latitude;
         var log = res.longitude;
-        console.log(lat,log)
+        console.log("res location"+lat+"::::"+log)
         findBikes(that, lat, log);
       },
     })
@@ -122,6 +122,9 @@ Page({
       //点击定位当前位置
       console.log(22222)
       that.mapCtx.moveToLocation();
+      var lat=this.data.lat
+      var log = this.data.log
+      console.log("loc"+lat+" ----"+log)
     }
     if (e.controlId == 3) {
       console.log(333333)
@@ -159,7 +162,7 @@ Page({
           var lat = res.latitude;
           var log = res.longitude;
           wx.request({
-            url: "http://192.168.0.200:8888/bike",
+            url: "http://localhost:8888/save",
             method: 'POST',
             data: {
               latitude: lat,
@@ -212,7 +215,7 @@ Page({
 function findBikes(that, lat, log) {
   //请求后端数据
   wx.request({
-    url: "http://192.168.0.200:8888/bikes",
+    url: "http://localhost:8888/bikes",
     method: 'GET',
     success: function (res) {
       const bikes = res.data.map((item) => {

@@ -86,7 +86,7 @@ Page({
     //console.log(code + " ," + phoneNum) 
     wx.request({
       //小程序访问的网络请求协议必须是https，url里面不能有端口号
-      url: "http://192.168.0.200:8888/genCode",
+      url: "http://localhost:8888/genCode",
       header: { 'content-type': 'application/x-www-form-urlencoded' },
       data: {
         nationCode: countryCode,
@@ -121,7 +121,7 @@ Page({
     console.log("opeid"+openid);
     //发送手机号和验证码进行校验
     wx.request({
-      url: "http://192.168.0.200:8888/verify",
+      url: "http://localhost:8888/verify",
       header: { 'content-type': 'application/x-www-form-urlencoded' },
       data: {
         id: openid,
@@ -136,7 +136,7 @@ Page({
         if (res.data) {
           wx.request({
             //微信小程序成产环境请求的协议必须是https，地址必须是域名，不能带端口号
-            url: "http://192.168.0.200:8888/reg",
+            url: "http://localhost:8888/reg",
             data: e.detail.value,
             method: 'POST',
             success: function (res) {
