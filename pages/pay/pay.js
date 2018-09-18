@@ -107,6 +107,7 @@ Page({
   },
    */
 
+  
   recharge: function () {
     wx.getLocation({
       success: function (res) {
@@ -123,7 +124,22 @@ Page({
             var province = address.province;
             var city = address.city;
             var district = address.district;
-            console.log(province + " , " + city + " ," + district)
+            //向日志服务器发送请求
+            wx.request({
+              url: "http://192.168.1.202/kafka/recharge",
+              method: "POST",
+              data: {   
+                date: new Date(),
+                phoneNum: "15841468888",
+                type: "wx",
+                amount: 100,
+                lat: lat,
+                log: log,
+                province: province,
+                city: city,
+                district: district
+              }
+            })
           }
         })
       },
