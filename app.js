@@ -34,10 +34,13 @@ App({
   },
 
   globalData: {
+    bikeNo: 100000001,
     openid: "",
     status: 0,
     balance: 0, //余额
-    userInfo: null
+    userInfo: null,
+    log:20,
+    lat:20,
   },
   getUserInfo: function(cb) {
     var that = this

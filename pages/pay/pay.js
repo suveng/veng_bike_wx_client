@@ -130,7 +130,7 @@ Page({
               method: "POST",
               data: {   
                 date: new Date(),
-                phoneNum: "15841468888",
+                phoneNum: "18320664028",
                 type: "wx",
                 amount: 100,
                 lat: lat,

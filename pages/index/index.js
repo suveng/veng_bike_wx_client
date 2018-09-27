@@ -6,7 +6,7 @@ Page({
   * 页面的初始数据
   */
   data: {
-    lat: 40,
+    lat: 44,
     log: 113,
     controls: [],
     markers: []
@@ -16,6 +16,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.mapCtx = wx.createMapContext('map');
 
     // 实例化API核心类
     qqmapsdk = new QQMapWX({
@@ -24,14 +25,8 @@ Page({
 
 
     var that = this;
-    wx.getLocation({
-      success: function (res) {
-        var lat = res.latitude;
-        var log = res.longitude;
-        console.log("res location"+lat+"::::"+log)
-        findBikes(that, lat, log);
-      },
-    })
+    //定位
+    getPosition(that);
     //模拟加载的动画
     wx.showLoading({
       title: '加载中',
@@ -41,9 +36,7 @@ Page({
       wx.hideLoading()
     }, 1500)
 
-    that.mapCtx = wx.createMapContext('map');
-    //手动定位
-    that.mapCtx.moveToLocation();
+
     wx.getSystemInfo({
       success: function (res) {
         var height = res.windowHeight;
@@ -113,18 +106,24 @@ Page({
   },
 
   regionchange(e) {
-    //var that = this;
+    var that = this;
+    if(e.type=="end"){
+      that.mapCtx.getCenterLocation({
+        success: function (res) {
+          // console.log(res)
+          findBikes(that,res.longitude,res.latitude);
+        }
+      })
+    }
+    
   },
 
   controltap(e) {
     var that = this;
     if (e.controlId == 2) {
       //点击定位当前位置
-      console.log(22222)
+      getPosition(that);
       that.mapCtx.moveToLocation();
-      var lat=this.data.lat
-      var log = this.data.log
-      console.log("loc"+lat+" ----"+log)
     }
     if (e.controlId == 3) {
       console.log(333333)
@@ -156,23 +155,26 @@ Page({
     }
 
     if (e.controlId == 5) {
+      //添加车辆
       console.log(5555)      
       that.mapCtx.getCenterLocation({
         success: function (res) {
           var lat = res.latitude;
           var log = res.longitude;
+          var bikeNo = getApp().globalData.bikeNo;
           wx.request({
             url: "http://localhost:8888/save",
             method: 'POST',
             data: {
-              latitude: lat,
-              longitude: log
+              id: bikeNo,
+              location: [log,lat]
             },
             success: function () {
-              findBikes(that, lat, log)
+              getApp().globalData.bikeNo=bikeNo+1;
+              findBikes(that, log, lat)
             }
           })
-        }
+        },
       })
     }
 
@@ -212,29 +214,50 @@ Page({
 
 })
 
-function findBikes(that, lat, log) {
+function findBikes(that, log, lat) {
   //请求后端数据
   wx.request({
-    url: "http://localhost:8888/bikes",
+    url: "http://localhost:8888/bikes/near",
     method: 'GET',
+    data:{
+      longitude: log,      
+      latitude: lat,
+    },
     success: function (res) {
-      const bikes = res.data.map((item) => {
+      console.log(res);
+      const bikes = res.data.content.map((item) => {
+        var bike =item.content;
         return {
           id: item.id,
           iconPath: "/image/bike.png",
           width: 35,
           height: 40,
-          latitude: item.latitude,
-          longitude: item.longitude
+          longitude: bike.location[0],
+          latitude: bike.location[1],
         };
       });
-      // 修改data里面的markers
+      // 修改当前页面变量data里面的markers
       that.setData({
-        lat: lat,
-        log: log,
         markers: bikes
       });
     }
+  })
+}
+function getPosition(that){
+  wx.getLocation({
+    success: function (res) {
+      //接受res的经纬度
+      var lat = res.latitude;
+      var log = res.longitude;
+      // 更新页面变量
+      that.setData({
+        log: log,
+        lat: lat
+      });
+      console.log("调用getyPositon 成功 ，返回的location为经度为" + log + " 纬度为：" + lat);
+      // 刷新页面，并查找附近车辆
+      findBikes(that, log, lat);
+    },
   })
 }
 
