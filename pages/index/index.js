@@ -243,6 +243,7 @@ function findBikes(that, log, lat) {
     }
   })
 }
+// 定位功能
 function getPosition(that){
   wx.getLocation({
     success: function (res) {
@@ -254,13 +255,16 @@ function getPosition(that){
         log: log,
         lat: lat
       });
+      // 更新全局变量
+      getApp().globalData.log=log;
+      getApp().globalData.lat=lat;
       console.log("调用getyPositon 成功 ，返回的location为经度为" + log + " 纬度为：" + lat);
       // 刷新页面，并查找附近车辆
       findBikes(that, log, lat);
     },
   })
 }
-
+// 扫描二维码进入骑行
 function scanCode() {
   wx.scanCode({
     success: function (res) {
