@@ -3,8 +3,8 @@ var qqmapsdk;
 
 Page({
   /**
-  * 页面的初始数据
-  */
+   * 页面的初始数据
+   */
   data: {
     lat: 44,
     log: 113,
@@ -15,7 +15,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function(options) {
     this.mapCtx = wx.createMapContext('map');
 
     // 实例化API核心类
@@ -32,13 +32,13 @@ Page({
       title: '加载中',
     })
     //1.5s关闭动画效果
-    setTimeout(function () {
+    setTimeout(function() {
       wx.hideLoading()
     }, 1500)
 
 
     wx.getSystemInfo({
-      success: function (res) {
+      success: function(res) {
         var height = res.windowHeight;
         var width = res.windowWidth;
         that.setData({
@@ -90,7 +90,7 @@ Page({
             },
             //是否可点击
             clickable: true
-          },{ //手动添加一辆单车
+          }, { //手动添加一辆单车
             id: 5,
             iconPath: "/image/bike.png",
             position: {
@@ -107,15 +107,15 @@ Page({
 
   regionchange(e) {
     var that = this;
-    if(e.type=="end"){
+    if (e.type == "end") {
       that.mapCtx.getCenterLocation({
-        success: function (res) {
+        success: function(res) {
           // console.log(res)
-          findBikes(that,res.longitude,res.latitude);
+          findRentals(that, res.longitude, res.latitude);
         }
       })
     }
-    
+
   },
 
   controltap(e) {
@@ -129,7 +129,7 @@ Page({
       console.log(333333)
       //获取全局变量中的status属性值
       var status = getApp().globalData.status;
-      if(status == 0) {
+      if (status == 0) {
         //跳转到注册页面
         wx.navigateTo({
           url: '../register/register',
@@ -156,22 +156,23 @@ Page({
 
     if (e.controlId == 5) {
       //添加车辆
-      console.log(5555)      
+      console.log(5555)
       that.mapCtx.getCenterLocation({
-        success: function (res) {
+        success: function(res) {
           var lat = res.latitude;
           var log = res.longitude;
-          var bikeNo = getApp().globalData.bikeNo;
+          var point_id = getApp().globalData.rentalNo;
           wx.request({
-            url: "http://localhost:8888/save",
+            url: "http://localhost:8888/rental/save",
             method: 'POST',
             data: {
-              id: bikeNo,
-              location: [log,lat]
+              point_id: point_id, 
+              location: [log, lat]
             },
-            success: function () {
-              getApp().globalData.bikeNo=bikeNo+1;
-              findBikes(that, log, lat)
+            success: function() {
+              getApp().globalData.rentalNo = point_id + 1;
+              // findBikes(that, log, lat)
+              findRentals(that,log,lat);
             }
           })
         },
@@ -186,7 +187,7 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
+  onReady: function() {
     //获取当前位置
     // wx.getLocation({
     //   success: function(res) {
@@ -214,19 +215,57 @@ Page({
 
 })
 
+function findRentals(that, log, lat) {
+  //请求后端数据
+  wx.request({
+    url: "http://localhost:8888/rental/findNearRentals",
+    method: 'GET',
+    data: {
+      longitude: log,
+      latitude: lat,
+    },
+    success: function (res) {
+      console.log(res);
+      const rentals = res.data.content.map((item) => {
+        var rental = item.content;
+        return {
+          id: item.id,
+          iconPath: "/image/bike.png",
+          width: 35,
+          height: 40,
+          longitude: rental.location[0],
+          latitude: rental.location[1],
+          callout: {
+            content: "剩余车辆：" + rental.left_bike,
+            color: "#ff0000",
+            fontSize: "16",
+            borderRadius: "10",
+            bgColor: "#ffffff",
+            padding: "10",
+            display: "ALWAYS"
+          }
+        };
+      });
+      // 修改当前页面变量data里面的markers
+      that.setData({
+        markers: rentals
+      });
+    }
+  })
+}
 function findBikes(that, log, lat) {
   //请求后端数据
   wx.request({
     url: "http://localhost:8888/bikes/near",
     method: 'GET',
-    data:{
-      longitude: log,      
+    data: {
+      longitude: log,
       latitude: lat,
     },
-    success: function (res) {
+    success: function(res) {
       console.log(res);
       const bikes = res.data.content.map((item) => {
-        var bike =item.content;
+        var bike = item.content;
         return {
           id: item.id,
           iconPath: "/image/bike.png",
@@ -234,6 +273,15 @@ function findBikes(that, log, lat) {
           height: 40,
           longitude: bike.location[0],
           latitude: bike.location[1],
+          callout: {
+            content: "剩余车辆：12345",
+             color: "#ff0000",
+             fontSize: "16",
+            borderRadius: "10",
+             bgColor: "#ffffff",
+             padding: "10",
+             display: "ALWAYS"
+          }
         };
       });
       // 修改当前页面变量data里面的markers
@@ -244,9 +292,9 @@ function findBikes(that, log, lat) {
   })
 }
 // 定位功能
-function getPosition(that){
+function getPosition(that) {
   wx.getLocation({
-    success: function (res) {
+    success: function(res) {
       //接受res的经纬度
       var lat = res.latitude;
       var log = res.longitude;
@@ -256,18 +304,18 @@ function getPosition(that){
         lat: lat
       });
       // 更新全局变量
-      getApp().globalData.log=log;
-      getApp().globalData.lat=lat;
+      getApp().globalData.log = log;
+      getApp().globalData.lat = lat;
       console.log("调用getyPositon 成功 ，返回的location为经度为" + log + " 纬度为：" + lat);
       // 刷新页面，并查找附近车辆
-      findBikes(that, log, lat);
+      findRentals(that, log, lat);
     },
   })
 }
 // 扫描二维码进入骑行
 function scanCode() {
   wx.scanCode({
-    success: function (res) {
+    success: function(res) {
       var bikeNo = res.result;
       console.log(bikeNo);
       var openid = wx.getStorageSync('openid');
@@ -276,7 +324,7 @@ function scanCode() {
           latitude: that.data.lat,
           longitude: that.data.log
         },
-        success: function (res) {
+        success: function(res) {
           var addr = res.result.address_component
           var province = addr.province;
           var city = addr.city;

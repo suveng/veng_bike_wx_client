@@ -35,6 +35,7 @@ App({
 
   globalData: {
     bikeNo: 100000001,
+    rentalNo:100000,
     openid: "",
     status: 0,
     balance: 0, //余额
