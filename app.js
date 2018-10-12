@@ -42,6 +42,7 @@ App({
     userInfo: null,
     log:20,
     lat:20,
+    phoneNum:0
   },
   getUserInfo: function(cb) {
     var that = this
