@@ -40,67 +40,88 @@ Page({
   /**
    * 点击充值按钮
    * */
-  
-  recharge: function () {
+
+  recharge: function() {
     var that = this;
     //充值提示框
     wx.showModal({
       title: '充值',
       content: '您是否进行充值' + that.data.payMoney + '元?',
-      success: function (res) {
+      success: function(res) {
         console.log(res)
         //确认充值
         if (res.confirm) {
           //发送充值请求
           var phoneNum = getApp().globalData.phoneNum;
           var openid = getApp().globalData.openid;
-          var charge =  that.data.payMoney;
-          wx.request({
-            url: 'http://localhost:8888/user/recharge',
-            method: 'POST',
-            header: { 'content-type': 'application/x-www-form-urlencoded' },
-            data: {
-              charge: charge,
-              phoneNum: phoneNum
+          var logitude = getApp().globalData.log;
+          var latitude = getApp().globalData.lat;
+          var charge = that.data.payMoney;
+
+          qqmapsdk.reverseGeocoder({
+            location: {
+              longitude: logitude,              
+              latitude: latitude
             },
-            success: function (res) {
-              if(res.data) {
-                wx.showModal({
-                  title: '提示',
-                  content: '充值成功！',
-                  success: function(res) {
-                    if (res.confirm) {
-                      wx.navigateTo({
-                        url: '../index/index',
-                      })
-                      
-                      // wx.getLocation({
-                      //   success: function(res) {
-                      //     var lat = res.altitude;
-                      //     var log = res.longitude;
-                      //     //埋点：记录用户充值的行为信息，以后做数据分析
-                      //     wx.request({
-                      //       url: "http://192.168.100.106/kafka/recharge",
-                      //       data: {
-                      //         openid: openid,
-                      //         phoneNum: phoneNum,
-                      //         amount: amount,
-                      //         date: new Date(),
-                      //         lat: lat,
-                      //         log: log,
+            success: function(res) {
+              var address = res.result.address_component;
+              var province = address.province;
+              var city = address.city;
+              var district = address.district;
+              wx.request({
+                url: 'http://localhost:8888/user/recharge',
+                method: 'POST',
+                header: {
+                  'content-type': 'application/x-www-form-urlencoded'
+                },
+                data: {
+                  charge: charge,
+                  phoneNum: phoneNum,
+                  province: province,
+                  city: city,
+                  district: district
+                },
+                success: function (res) {
+                  if (res.data) {
+                    wx.showModal({
+                      title: '提示',
+                      content: '充值成功！',
+                      success: function (res) {
+                        if (res.confirm) {
+                          wx.navigateTo({
+                            url: '../index/index',
+                          })
+                          // wx.getLocation({
+                          //   success: function(res) {
+                          //     var lat = res.altitude;
+                          //     var log = res.longitude;
+                          //     //埋点：记录用户充值的行为信息，以后做数据分析
+                          //     wx.request({
+                          //       url: "http://192.168.100.106/kafka/recharge",
+                          //       data: {
+                          //         openid: openid,
+                          //         phoneNum: phoneNum,
+                          //         amount: amount,
+                          //         date: new Date(),
+                          //         lat: lat,
+                          //         log: log,
 
-                      //       },
-                      //       method: "POST"
-                      //     })
+                          //       },
+                          //       method: "POST"
+                          //     })
 
-                      //   },
-                      // })
-                    }
+                          //   },
+                          // })
+                        }
+                      }
+                    })
                   }
-                })
-              }
+                }
+              })
             }
           })
+
+
         }
       }
     })
