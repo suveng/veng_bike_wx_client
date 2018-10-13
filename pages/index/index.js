@@ -315,44 +315,59 @@ function getPosition(that) {
 // 扫描二维码进入骑行
 function scanCode() {
   wx.scanCode({
-    success: function(res) {
+    success: function (res) {
       var bikeNo = res.result;
       console.log(bikeNo);
       var openid = wx.getStorageSync('openid');
-      qqmapsdk.reverseGeocoder({
-        location: {
-          latitude: that.data.lat,
-          longitude: that.data.log
-        },
-        success: function(res) {
-          var addr = res.result.address_component
-          var province = addr.province;
-          var city = addr.city;
-          var district = addr.district;
-          //将数据写入到es中
-          wx.request({
-            url: "http://192.168.10.251:9200/bike/unlock",
-            data: {
-              bikeNo: bikeNo,
-              time: new Date(),
-              openid: openid,
-              lat: that.data.lat,
-              log: that.data.log,
-              province: province,
-              city: city,
-              district: district
-            },
-            method: "POST"
-          })
-        }
+  
+      wx.navigateTo({
+        url: '../billing/billing?bikeNo='+bikeNo
+      
       });
-
-      //wx.navigateTo({
-      //  url: '../lock/index',
-      //});
     }
   })
 }
+
+// function scanCode() {
+//   wx.scanCode({
+//     success: function(res) {
+//       var bikeNo = res.result;
+//       console.log(bikeNo);
+//       var openid = wx.getStorageSync('openid');
+//       qqmapsdk.reverseGeocoder({
+//         location: {
+//           latitude: that.data.lat,
+//           longitude: that.data.log
+//         },
+//         success: function(res) {
+//           var addr = res.result.address_component
+//           var province = addr.province;
+//           var city = addr.city;
+//           var district = addr.district;
+//           //将数据写入到es中
+//           wx.request({
+//             url: "http://192.168.10.251:9200/bike/unlock",
+//             data: {
+//               bikeNo: bikeNo,
+//               time: new Date(),
+//               openid: openid,
+//               lat: that.data.lat,
+//               log: that.data.log,
+//               province: province,
+//               city: city,
+//               district: district
+//             },
+//             method: "POST"
+//           })
+//         }
+//       });
+
+//       //wx.navigateTo({
+//       //  url: '../lock/index',
+//       //});
+//     }
+//   })
+// }
 
 /** 
 
