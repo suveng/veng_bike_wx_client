@@ -166,13 +166,13 @@ Page({
             url: "http://localhost:8888/rental/save",
             method: 'POST',
             data: {
-              point_id: point_id, 
+              point_id: point_id,
               location: [log, lat]
             },
             success: function() {
               getApp().globalData.rentalNo = point_id + 1;
               // findBikes(that, log, lat)
-              findRentals(that,log,lat);
+              findRentals(that, log, lat);
             }
           })
         },
@@ -224,7 +224,7 @@ function findRentals(that, log, lat) {
       longitude: log,
       latitude: lat,
     },
-    success: function (res) {
+    success: function(res) {
       console.log(res);
       const rentals = res.data.content.map((item) => {
         var rental = item.content;
@@ -253,6 +253,7 @@ function findRentals(that, log, lat) {
     }
   })
 }
+
 function findBikes(that, log, lat) {
   //请求后端数据
   wx.request({
@@ -315,15 +316,29 @@ function getPosition(that) {
 // 扫描二维码进入骑行
 function scanCode() {
   wx.scanCode({
-    success: function (res) {
+    success: function(res) {
       var bikeNo = res.result;
       console.log(bikeNo);
       var openid = wx.getStorageSync('openid');
-  
-      wx.navigateTo({
-        url: '../billing/billing?bikeNo='+bikeNo
-      
-      });
+      wx.request({
+        url: 'http://localhost:8888/vehicle/unlock',
+        method: 'POST',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        data: {
+          id: openid,
+          bikeNo: bikeNo
+        },
+        success: function(res) {
+          console.log(res);
+          wx.navigateTo({
+            url: '../billing/billing?bikeNo=' + bikeNo
+
+          });
+        }
+
+      })
     }
   })
 }
