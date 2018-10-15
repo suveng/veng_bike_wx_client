@@ -1,5 +1,5 @@
 {
-  "pages":[
+  "pages": [
     "pages/index/index",
     "pages/register/register",
     "pages/deposit/deposit",
@@ -7,13 +7,13 @@
     "pages/wallet/wallet",
     "pages/pay/pay",
     "pages/logs/logs",
-    "pages/billing/billing"
-    
+    "pages/billing/billing",
+    "pages/route/route"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "veng_bike",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle": "black"
   }
 }

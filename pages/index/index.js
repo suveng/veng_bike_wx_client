@@ -124,6 +124,9 @@ Page({
       //点击定位当前位置
       getPosition(that);
       that.mapCtx.moveToLocation();
+      wx.navigateTo({
+        url: '../route/route',
+      });
     }
     if (e.controlId == 3) {
       console.log(333333)
