@@ -17,10 +17,13 @@ function getlocation() {
   var lat, lng;
   wx.getLocation({
     type: 'gcj02',
-    success: function (res) {
+    success: function(res) {
       lat = res.latitude;
       lng = res.longitude;
-      point.push({ latitude: lat, longitude: lng });
+      point.push({
+        latitude: lat,
+        longitude: lng
+      });
       console.log(point);
     }
   });
@@ -31,16 +34,22 @@ Page({
     polyline: [],
   },
 
-  onLoad: function () {
+  onLoad: function() {
     that2 = this;
 
-    point.push({ latitude: 23.176167, longitude: 113.480819 });
-    point.push({ latitude: 23.175753, longitude: 113.481688 });
-    
+    point.push({
+      latitude: 23.176167,
+      longitude: 113.480819
+    });
+    point.push({
+      latitude: 23.175753,
+      longitude: 113.481688
+    });
+
 
     wx.getLocation({
       type: 'gcj02',
-      success: function (res) {
+      success: function(res) {
         that2.setData({
           longitude: res.longitude,
           latitude: res.latitude,
@@ -50,15 +59,16 @@ Page({
     drawline();
   },
 
-  start: function () {
+  start: function() {
     this.timer = setInterval(repeat, 1000);
+
     function repeat() {
       console.log('re');
       getlocation();
       drawline();
     }
   },
-  end: function () {
+  end: function() {
     console.log('end');
     clearInterval(this.timer);
   }

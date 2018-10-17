@@ -57,10 +57,10 @@ Page({
           }, {
             //定位按钮安置
             id: 2,
-            iconPath: '/image/img1.png',
+              iconPath: '/image/定位.png',
             position: {
-              width: 40,
-              height: 40,
+              width: 30,
+              height: 30,
               left: 20,
               top: height - 60.
             },
@@ -81,10 +81,10 @@ Page({
           }, {
             //充值按钮
             id: 4,
-            iconPath: '/image/pay.png',
+              iconPath: '/image/充值.png',
             position: {
-              width: 40,
-              height: 40,
+              width: 30,
+              height: 30,
               left: width - 45,
               top: height - 60.
             },
@@ -96,6 +96,28 @@ Page({
             position: {
               width: 35,
               height: 40,
+            },
+            //是否可点击
+            clickable: true
+          }, {//查询轨迹
+            id: 6,
+            iconPath: "/image/轨迹查询.png",
+            position: {
+              width: 30,
+              height: 30,
+              left: width - 45,
+              top: height - 120.
+            },
+            //是否可点击
+            clickable: true
+          }, {//个人中心
+            id: 7,
+            iconPath: "/image/个人_fill.png",
+            position: {
+              width: 30,
+              height: 30,
+              left: width - 45,
+              top: height - 180.
             },
             //是否可点击
             clickable: true
@@ -124,9 +146,6 @@ Page({
       //点击定位当前位置
       getPosition(that);
       that.mapCtx.moveToLocation();
-      wx.navigateTo({
-        url: '../route/route',
-      });
     }
     if (e.controlId == 3) {
       console.log(333333)
@@ -179,6 +198,13 @@ Page({
             }
           })
         },
+      })
+    }
+    if (e.controlId == 6) {
+      //添加车辆
+      console.log(6666)
+      wx.navigateTo({
+        url: '../record/record',
       })
     }
 
