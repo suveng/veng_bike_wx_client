@@ -34,8 +34,8 @@ App({
   },
 
   globalData: {
-    bikeNo: 100000001,
-    rentalNo:100000,
+    bikeNo: 1000000010,
+    rentalNo:1000000,
     openid: "",
     status: 0,
     balance: 0, //余额
@@ -65,7 +65,7 @@ App({
 //根据openid获取用户的信息
 function getInfoByOpenid(openid) {
   wx.request({
-    url: "http://localhost:8888/phoneNum/" + openid,
+    url: "http://192.168.1.200:8888/phoneNum/" + openid,
     success: function(res) {
       var user = res.data;
       if (user) {
@@ -78,6 +78,7 @@ function getInfoByOpenid(openid) {
         wx.setStorageSync('status', status);
       }
       console.log("getuserinfo over!");
+      
     }
   })
 }

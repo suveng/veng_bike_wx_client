@@ -3,7 +3,7 @@
 longitude="{{longitude}}" 
 latitude="{{latitude}}"  
 polyline="{{polyline}}" 
-scale="18" 
+scale="16" 
 show-location 
 style="width:100vh;height:100vh;"
 ></map>

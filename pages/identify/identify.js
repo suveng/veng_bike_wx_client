@@ -71,7 +71,7 @@ Page({
     var name = e.detail.value.name
     var idNum = e.detail.value.idNum
     wx.request({
-      url: "http://localhost:8888/identify",
+      url: "http://192.168.1.200:8888/identify",
       header: { 'content-type': 'application/x-www-form-urlencoded' },
       data: {
         phoneNum: phoneNum,

@@ -21,7 +21,7 @@ Page({
         })
         var phoneNum = getApp().globalData.phoneNum;
         wx.request({
-          url: "http://localhost:8888/deposit",
+          url: "http://192.168.1.200:8888/deposit",
           header: { 'content-type': 'application/x-www-form-urlencoded' },
           data: {
             phoneNum: phoneNum,

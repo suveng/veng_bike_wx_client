@@ -5,7 +5,7 @@ function getOpenid() {
     openid = wx.getStorageSync('openid');
     if(!openid) {
       wx.request({
-        url: "http://localhost:8888/appInfo",
+        url: "http://192.168.1.200:8888/appInfo",
         success: function(res) {
           
         }

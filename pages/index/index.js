@@ -35,8 +35,6 @@ Page({
     setTimeout(function() {
       wx.hideLoading()
     }, 1500)
-
-
     wx.getSystemInfo({
       success: function(res) {
         var height = res.windowHeight;
@@ -57,7 +55,7 @@ Page({
           }, {
             //定位按钮安置
             id: 2,
-              iconPath: '/image/定位.png',
+            iconPath: '/image/定位.png',
             position: {
               width: 30,
               height: 30,
@@ -81,7 +79,7 @@ Page({
           }, {
             //充值按钮
             id: 4,
-              iconPath: '/image/充值.png',
+            iconPath: '/image/充值.png',
             position: {
               width: 30,
               height: 30,
@@ -99,7 +97,7 @@ Page({
             },
             //是否可点击
             clickable: true
-          }, {//查询轨迹
+          }, { //查询轨迹
             id: 6,
             iconPath: "/image/轨迹查询.png",
             position: {
@@ -110,7 +108,7 @@ Page({
             },
             //是否可点击
             clickable: true
-          }, {//个人中心
+          }, { //个人中心
             id: 7,
             iconPath: "/image/个人_fill.png",
             position: {
@@ -122,9 +120,17 @@ Page({
             //是否可点击
             clickable: true
           }]
-        })
+        });
+        setTimeout(function () {
+          //要延时执行的代码
+          that.mapCtx.moveToLocation()
+          console.log("sdfadfasdfasdf")
+        }, 2000)
       },
     })
+
+    // moveCenter(that);    
+    // that.mapCtx.moveToLocation();
   },
 
   regionchange(e) {
@@ -143,9 +149,11 @@ Page({
   controltap(e) {
     var that = this;
     if (e.controlId == 2) {
+      console.log(1111111111);
       //点击定位当前位置
-      getPosition(that);
       that.mapCtx.moveToLocation();
+      // getPosition(that);      
+
     }
     if (e.controlId == 3) {
       console.log(333333)
@@ -185,7 +193,7 @@ Page({
           var log = res.longitude;
           var point_id = getApp().globalData.rentalNo;
           wx.request({
-            url: "http://localhost:8888/rental/save",
+            url: "http://192.168.1.200:8888/rental/save",
             method: 'POST',
             data: {
               point_id: point_id,
@@ -247,14 +255,14 @@ Page({
 function findRentals(that, log, lat) {
   //请求后端数据
   wx.request({
-    url: "http://localhost:8888/rental/findNearRentals",
+    url: "http://192.168.1.200:8888/rental/findNearRentals",
     method: 'GET',
     data: {
       longitude: log,
       latitude: lat,
     },
     success: function(res) {
-      console.log(res);
+      console.log("findRentals--" + res);
       const rentals = res.data.content.map((item) => {
         var rental = item.content;
         return {
@@ -286,7 +294,7 @@ function findRentals(that, log, lat) {
 function findBikes(that, log, lat) {
   //请求后端数据
   wx.request({
-    url: "http://localhost:8888/bikes/near",
+    url: "http://192.168.1.200:8888/bikes/near",
     method: 'GET',
     data: {
       longitude: log,
@@ -325,6 +333,7 @@ function findBikes(that, log, lat) {
 function getPosition(that) {
   wx.getLocation({
     success: function(res) {
+
       //接受res的经纬度
       var lat = res.latitude;
       var log = res.longitude;
@@ -333,6 +342,7 @@ function getPosition(that) {
         log: log,
         lat: lat
       });
+      console.log("getposition--" + log + "---------" + lat);
       // 更新全局变量
       getApp().globalData.log = log;
       getApp().globalData.lat = lat;
@@ -350,7 +360,7 @@ function scanCode() {
       console.log(bikeNo);
       var openid = wx.getStorageSync('openid');
       wx.request({
-        url: 'http://localhost:8888/vehicle/unlock',
+        url: 'http://192.168.1.200:8888/vehicle/unlock',
         method: 'POST',
         header: {
           'content-type': 'application/x-www-form-urlencoded'
@@ -370,6 +380,11 @@ function scanCode() {
       })
     }
   })
+}
+
+function moveCenter(that) {
+  that.mapCtx.moveToLocation();
+  console.log("asdfasdfasdf")
 }
 
 // function scanCode() {
