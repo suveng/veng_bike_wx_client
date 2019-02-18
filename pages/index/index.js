@@ -6,26 +6,30 @@ Page({
    * 页面的初始数据
    */
   data: {
+    // 纬度 latitude
     lat: 44,
+    // 经度 longitude
     log: 113,
+    // 页面控件
     controls: [],
+    // 页面图层
     markers: []
   },
 
   /**
-   * 生命周期函数--监听页面加载
+   * 监听页面加载
    */
   onLoad: function(options) {
+    // 初始化地图
     this.mapCtx = wx.createMapContext('map');
 
-    // 实例化API核心类
+    // 初始qqmap sdk
     qqmapsdk = new QQMapWX({
       key: 'WUHBZ-UZM6I-O2JGC-5PZI4-WZLPH-JHFW2'
     });
-
-
+    // 赋值 this(page)给 that 变量
     var that = this;
-    //定位
+    //定位函数
     getPosition(that);
     //模拟加载的动画
     wx.showLoading({
@@ -35,10 +39,13 @@ Page({
     setTimeout(function() {
       wx.hideLoading()
     }, 1500)
+
+    // 获取系统信息
     wx.getSystemInfo({
       success: function(res) {
-        var height = res.windowHeight;
-        var width = res.windowWidth;
+        var height = res.windowHeight;//窗口高度
+        var width = res.windowWidth;//窗口宽度
+        // 设置page 的数据 controls
         that.setData({
           controls: [{
             //中心点位置
@@ -121,23 +128,56 @@ Page({
             clickable: true
           }]
         });
+
+
+        //要延时执行的代码
         setTimeout(function () {
-          //要延时执行的代码
+          // 2s 延迟 定位
           that.mapCtx.moveToLocation()
-          console.log("sdfadfasdfasdf")
         }, 2000)
       },
     })
-
-    // moveCenter(that);    
-    // that.mapCtx.moveToLocation();
   },
+  
 
-  regionchange(e) {
+
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function() {
+    //获取当前位置
+    // wx.getLocation({
+    //   success: function(res) {
+    //     //纬度
+    //     var lat = res.latitude;
+    //     //经度
+    //     var log = res.longitude;
+    //     //从本地存储中取出唯一身份标识
+    //     var openid = wx.getStorageSync('openid')
+    //     //发送request向ES中添加数据（添加一条文档）
+    //     wx.request({
+    //       url: "http://192.168.5.250/bike/p_index",
+    //       data: {
+    //         time: new Date(),
+    //         openid: openid,
+    //         lat: lat,
+    //         log: log
+    //       },
+    //       method: "POST",
+    //       success: function() {}
+    //     })
+    //   },
+    // })
+  },
+  /**
+   * 	视野发生变化时触发
+   */
+  regionChange(e) {
     var that = this;
     if (e.type == "end") {
       that.mapCtx.getCenterLocation({
-        success: function(res) {
+        success: function (res) {
           // console.log(res)
           findRentals(that, res.longitude, res.latitude);
         }
@@ -145,8 +185,10 @@ Page({
     }
 
   },
-
-  controltap(e) {
+  /**
+   * 点击控件时触发，会返回control的id
+   */
+  controlTap(e) {
     var that = this;
     if (e.controlId == 2) {
       console.log(1111111111);
@@ -188,7 +230,7 @@ Page({
       //添加车辆
       console.log(5555)
       that.mapCtx.getCenterLocation({
-        success: function(res) {
+        success: function (res) {
           var lat = res.latitude;
           var log = res.longitude;
           var point_id = getApp().globalData.rentalNo;
@@ -199,7 +241,7 @@ Page({
               point_id: point_id,
               location: [log, lat]
             },
-            success: function() {
+            success: function () {
               getApp().globalData.rentalNo = point_id + 1;
               // findBikes(that, log, lat)
               findRentals(that, log, lat);
@@ -217,37 +259,6 @@ Page({
     }
 
 
-  },
-
-
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function() {
-    //获取当前位置
-    // wx.getLocation({
-    //   success: function(res) {
-    //     //纬度
-    //     var lat = res.latitude;
-    //     //经度
-    //     var log = res.longitude;
-    //     //从本地存储中取出唯一身份标识
-    //     var openid = wx.getStorageSync('openid')
-    //     //发送request向ES中添加数据（添加一条文档）
-    //     wx.request({
-    //       url: "http://192.168.5.250/bike/p_index",
-    //       data: {
-    //         time: new Date(),
-    //         openid: openid,
-    //         lat: lat,
-    //         log: log
-    //       },
-    //       method: "POST",
-    //       success: function() {}
-    //     })
-    //   },
-    // })
   }
 
 })
@@ -386,62 +397,3 @@ function moveCenter(that) {
   that.mapCtx.moveToLocation();
   console.log("asdfasdfasdf")
 }
-
-// function scanCode() {
-//   wx.scanCode({
-//     success: function(res) {
-//       var bikeNo = res.result;
-//       console.log(bikeNo);
-//       var openid = wx.getStorageSync('openid');
-//       qqmapsdk.reverseGeocoder({
-//         location: {
-//           latitude: that.data.lat,
-//           longitude: that.data.log
-//         },
-//         success: function(res) {
-//           var addr = res.result.address_component
-//           var province = addr.province;
-//           var city = addr.city;
-//           var district = addr.district;
-//           //将数据写入到es中
-//           wx.request({
-//             url: "http://192.168.10.251:9200/bike/unlock",
-//             data: {
-//               bikeNo: bikeNo,
-//               time: new Date(),
-//               openid: openid,
-//               lat: that.data.lat,
-//               log: that.data.log,
-//               province: province,
-//               city: city,
-//               district: district
-//             },
-//             method: "POST"
-//           })
-//         }
-//       });
-
-//       //wx.navigateTo({
-//       //  url: '../lock/index',
-//       //});
-//     }
-//   })
-// }
-
-/** 
-
-//未充押金
-if (!flag) {
-  wx.showModal({
-    title: '提示',
-    content: '您的账号押金不足，请充押金后再尝试开锁吧！',
-    showCancel: false,
-    confirmText: '去充值',
-    success: function (res) {
-      wx.navigateTo({
-        url: '../wallet/wallet',
-      });
-    }
-  })
-}
-*/

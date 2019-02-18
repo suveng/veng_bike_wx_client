@@ -9,6 +9,6 @@
  scale="17" 
  show-location 
  style="width: 100%; height:100%"
- bindcontroltap="controltap"
- bindregionchange="regionchange"
+ bindcontroltap="controlTap"
+ bindregionchange="regionChange"
  ></map>
