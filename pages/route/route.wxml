@@ -1,7 +1,7 @@
 <!--pages/route/route.wxml-->
 <map id="map" 
-longitude="{{longitude}}" 
-latitude="{{latitude}}"  
+longitude="{{lo}}" 
+latitude="{{la}}"  
 polyline="{{polyline}}" 
 scale="16" 
 show-location 
