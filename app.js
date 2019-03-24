@@ -65,7 +65,7 @@ App({
 //根据openid获取用户的信息
 function getInfoByOpenid(openid) {
   wx.request({
-    url: "http://192.168.1.200:8888/phoneNum/" + openid,
+    url: "http://localhost:8888/phoneNum/" + openid,
     success: function(res) {
       var user = res.data;
       if (user) {

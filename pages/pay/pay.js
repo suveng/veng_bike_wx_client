@@ -69,7 +69,7 @@ Page({
               var city = address.city;
               var district = address.district;
               wx.request({
-                url: 'http://192.168.1.200:8888/user/recharge',
+                url: 'http://localhost:8888/user/recharge',
                 method: 'POST',
                 header: {
                   'content-type': 'application/x-www-form-urlencoded'
@@ -165,7 +165,7 @@ Page({
 
   //           //向服务器发送充值请求
   //           wx.request({
-  //             url: 'http://192.168.1.200:8888/user/recharge',
+  //             url: 'http://localhost:8888/user/recharge',
   //             method: 'POST',
   //             data: {
 

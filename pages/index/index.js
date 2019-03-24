@@ -235,7 +235,7 @@ Page({
           var log = res.longitude;
           var point_id = getApp().globalData.rentalNo;
           wx.request({
-            url: "http://192.168.1.200:8888/rental/save",
+            url: "http://localhost:8888/rental/save",
             method: 'POST',
             data: {
               point_id: point_id,
@@ -266,7 +266,7 @@ Page({
 function findRentals(that, log, lat) {
   //请求后端数据
   wx.request({
-    url: "http://192.168.1.200:8888/rental/findNearRentals",
+    url: "http://localhost:8888/rental/findNearRentals",
     method: 'GET',
     data: {
       longitude: log,
@@ -305,7 +305,7 @@ function findRentals(that, log, lat) {
 function findBikes(that, log, lat) {
   //请求后端数据
   wx.request({
-    url: "http://192.168.1.200:8888/bikes/near",
+    url: "http://localhost:8888/bikes/near",
     method: 'GET',
     data: {
       longitude: log,
@@ -371,7 +371,7 @@ function scanCode() {
       console.log(bikeNo);
       var openid = wx.getStorageSync('openid');
       wx.request({
-        url: 'http://192.168.1.200:8888/vehicle/unlock',
+        url: 'http://localhost:8888/vehicle/unlock',
         method: 'POST',
         header: {
           'content-type': 'application/x-www-form-urlencoded'
