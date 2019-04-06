@@ -16,5 +16,10 @@
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "veng_bike",
     "navigationBarTextStyle": "black"
+  },
+  "permission":{
+    "scope.userLocation":{
+      "desc":"你的位置信息将用于小程序寻找附近车辆"
+    }
   }
 }

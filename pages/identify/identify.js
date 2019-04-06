@@ -70,6 +70,9 @@ Page({
     var phoneNum = globalData.phoneNum;
     var name = e.detail.value.name
     var idNum = e.detail.value.idNum
+    wx.showLoading({
+      title: '验证中',
+    })
     wx.request({
       url: "http://localhost:8888/identify",
       header: { 'content-type': 'application/x-www-form-urlencoded' },
@@ -81,12 +84,21 @@ Page({
       },
       method: 'POST',
       success: function (res) {
-        wx.hideLoading();
-        //更新全局变量中的status属性
-        globalData.status = 3
-        wx.navigateTo({
-          url: '../index/index',
-        });
+        if (res.data=="success"){
+          wx.hideLoading();
+          //更新全局变量中的status属性
+          globalData.status = 3
+          wx.navigateTo({
+            url: '../index/index',
+          });
+        }else{
+          wx.hideLoading();
+          wx.showModal({
+            title: '提示',
+            content: '验证失败！请重试',
+          })
+        }
+        
       }
     })
   }

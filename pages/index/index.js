@@ -191,36 +191,38 @@ Page({
   controlTap(e) {
     var that = this;
     if (e.controlId == 2) {
-      console.log(1111111111);
+      console.log("点击2控件，定位当前位置");
       //点击定位当前位置
-      that.mapCtx.moveToLocation();
-      // getPosition(that);      
-
+      that.mapCtx.moveToLocation();      
     }
     if (e.controlId == 3) {
-      console.log(333333)
+      console.log("点击3控件，扫码开锁")
       //获取全局变量中的status属性值
       var status = getApp().globalData.status;
       if (status == 0) {
+        console.log("用户状态为0，需要注册")
         //跳转到注册页面
         wx.navigateTo({
           url: '../register/register',
         });
       } else if (status == 1) {
+        console.log("用户状态为1，需要充值")
         wx.navigateTo({
           url: '../deposit/deposit',
         });
       } else if (status == 2) {
+        console.log("用户状态为2，需要实名认证")
         wx.navigateTo({
           url: '../identify/identify',
         });
       } else if (status == 3) {
+        console.log("用户状态为3，已通过校验")
         scanCode()
       }
     }
 
     if (e.controlId == 4) {
-      console.log("4444")
+      console.log("点击4控件，充值")
       wx.navigateTo({
         url: '../pay/pay',
       })
@@ -228,7 +230,7 @@ Page({
 
     if (e.controlId == 5) {
       //添加车辆
-      console.log(5555)
+      console.log("点击5控件，添加租车点")
       that.mapCtx.getCenterLocation({
         success: function (res) {
           var lat = res.latitude;
@@ -243,7 +245,6 @@ Page({
             },
             success: function () {
               getApp().globalData.rentalNo = point_id + 1;
-              // findBikes(that, log, lat)
               findRentals(that, log, lat);
             }
           })
@@ -251,11 +252,15 @@ Page({
       })
     }
     if (e.controlId == 6) {
-      //添加车辆
-      console.log(6666)
+      //轨迹路线
+      console.log("点击6控件，用户轨迹路线")
       wx.navigateTo({
         url: '../record/record',
       })
+    }
+    if (e.controlId == 7) {
+      //个人中心
+      console.log("点击7控件，用户个人中心")
     }
 
 
