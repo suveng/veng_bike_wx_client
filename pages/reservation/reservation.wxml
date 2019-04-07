@@ -1,0 +1,31 @@
+<form bindsubmit="formSubmit">
+  <view class="weui-cells">
+    <view class="weui-cell weui-cell_input weui-cell_vcode">
+      <view class="weui-cell__hd">
+        <view class="weui-label">经度</view>
+      </view>
+      <view class="weui-cell__bd">
+        <input class="weui-input" name="longitude" placeholder="请输入经度" value="{{longitude}}" />
+      </view>
+    </view>
+  </view>
+
+
+  <view class="weui-cells">
+    <view class="weui-cell weui-cell_input weui-cell_vcode">
+      <view class="weui-cell__hd">
+        <view class="weui-label">纬度</view>
+      </view>
+      <view class="weui-cell__bd">
+        <input class="weui-input" name="latitude" placeholder="请输入纬度" value="{{latitude}}" />
+      </view>
+    </view>
+  </view>
+
+  <view class="weui-btn-area">
+    <button class="weui-btn" type="primary" formType="submit">确定</button>
+  </view>
+    <view class="weui-btn-area">
+    <button class="weui-btn" type="primary" bindtap="getLocation" >我选择现在的位置</button>
+  </view>
+</form>

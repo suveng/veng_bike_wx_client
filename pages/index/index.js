@@ -43,133 +43,122 @@ Page({
     // 获取系统信息
     wx.getSystemInfo({
       success: function(res) {
-        var height = res.windowHeight;//窗口高度
-        var width = res.windowWidth;//窗口宽度
+        var height = res.windowHeight; //窗口高度
+        var width = res.windowWidth; //窗口宽度
         // 设置page 的数据 controls
         that.setData({
           controls: [{
-            //中心点位置
-            id: 1,
-            iconPath: '/image/location.png',
-            position: {
-              width: 20,
-              height: 35,
-              left: width / 2 - 10,
-              top: height / 2 - 35.
+              //中心点位置
+              id: 1,
+              iconPath: '/image/location.png',
+              position: {
+                width: 20,
+                height: 35,
+                left: width / 2 - 10,
+                top: height / 2 - 35.
+              },
+              //是否可点击
+              clickable: true
+            }, {
+              //定位按钮安置
+              id: 2,
+              iconPath: '/image/定位.png',
+              position: {
+                width: 30,
+                height: 30,
+                left: 20,
+                top: height - 60.
+              },
+              //是否可点击
+              clickable: true
+            }, {
+              //扫码按钮
+              id: 3,
+              iconPath: '/image/qrcode.png',
+              position: {
+                width: 100,
+                height: 40,
+                left: width / 2 - 50,
+                top: height - 60.
+              },
+              //是否可点击
+              clickable: true
+            }, {
+              //充值按钮
+              id: 4,
+              iconPath: '/image/充值.png',
+              position: {
+                width: 30,
+                height: 30,
+                left: width - 45,
+                top: height - 60
+              },
+              //是否可点击
+              clickable: true
+            }, { //手动添加一辆单车
+              id: 5,
+              iconPath: "/image/bike.png",
+              position: {
+                width: 35,
+                height: 40,
+              },
+              //是否可点击
+              clickable: true
+            }, { //查询轨迹
+              id: 6,
+              iconPath: "/image/轨迹查询.png",
+              position: {
+                width: 30,
+                height: 30,
+                left: width - 45,
+                top: height - 120.
+              },
+              //是否可点击
+              clickable: true
+            }, { //个人中心
+              id: 7,
+              iconPath: "/image/个人_fill.png",
+              position: {
+                width: 30,
+                height: 30,
+                left: width - 45,
+                top: height - 180.
+              },
+              //是否可点击
+              clickable: true
             },
-            //是否可点击
-            clickable: true
-          }, {
-            //定位按钮安置
-            id: 2,
-            iconPath: '/image/定位.png',
-            position: {
-              width: 30,
-              height: 30,
-              left: 20,
-              top: height - 60.
-            },
-            //是否可点击
-            clickable: true
-          }, {
-            //扫码按钮
-            id: 3,
-            iconPath: '/image/qrcode.png',
-            position: {
-              width: 100,
-              height: 40,
-              left: width / 2 - 50,
-              top: height - 60.
-            },
-            //是否可点击
-            clickable: true
-          }, {
-            //充值按钮
-            id: 4,
-            iconPath: '/image/充值.png',
-            position: {
-              width: 30,
-              height: 30,
-              left: width - 45,
-              top: height - 60.
-            },
-            //是否可点击
-            clickable: true
-          }, { //手动添加一辆单车
-            id: 5,
-            iconPath: "/image/bike.png",
-            position: {
-              width: 35,
-              height: 40,
-            },
-            //是否可点击
-            clickable: true
-          }, { //查询轨迹
-            id: 6,
-            iconPath: "/image/轨迹查询.png",
-            position: {
-              width: 30,
-              height: 30,
-              left: width - 45,
-              top: height - 120.
-            },
-            //是否可点击
-            clickable: true
-          }, { //个人中心
-            id: 7,
-            iconPath: "/image/个人_fill.png",
-            position: {
-              width: 30,
-              height: 30,
-              left: width - 45,
-              top: height - 180.
-            },
-            //是否可点击
-            clickable: true
-          }]
+            { //个人中心
+              id: 8,
+              iconPath: "/image/预约.png",
+              position: {
+                width: 40,
+                height: 40,
+                left: width / 2 + 70,
+                top: height - 60.
+              },
+              //是否可点击
+              clickable: true
+            }
+          ]
         });
 
 
         //要延时执行的代码
-        setTimeout(function () {
+        setTimeout(function() {
           // 2s 延迟 定位
           that.mapCtx.moveToLocation()
         }, 2000)
       },
     })
   },
-  
+
 
 
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function() {
-    //获取当前位置
-    // wx.getLocation({
-    //   success: function(res) {
-    //     //纬度
-    //     var lat = res.latitude;
-    //     //经度
-    //     var log = res.longitude;
-    //     //从本地存储中取出唯一身份标识
-    //     var openid = wx.getStorageSync('openid')
-    //     //发送request向ES中添加数据（添加一条文档）
-    //     wx.request({
-    //       url: "http://192.168.5.250/bike/p_index",
-    //       data: {
-    //         time: new Date(),
-    //         openid: openid,
-    //         lat: lat,
-    //         log: log
-    //       },
-    //       method: "POST",
-    //       success: function() {}
-    //     })
-    //   },
-    // })
-  },
+  onReady: function() {},
   /**
    * 	视野发生变化时触发
    */
@@ -177,7 +166,7 @@ Page({
     var that = this;
     if (e.type == "end") {
       that.mapCtx.getCenterLocation({
-        success: function (res) {
+        success: function(res) {
           // console.log(res)
           findRentals(that, res.longitude, res.latitude);
         }
@@ -193,7 +182,7 @@ Page({
     if (e.controlId == 2) {
       console.log("点击2控件，定位当前位置");
       //点击定位当前位置
-      that.mapCtx.moveToLocation();      
+      that.mapCtx.moveToLocation();
     }
     if (e.controlId == 3) {
       console.log("点击3控件，扫码开锁")
@@ -232,7 +221,7 @@ Page({
       //添加车辆
       console.log("点击5控件，添加租车点")
       that.mapCtx.getCenterLocation({
-        success: function (res) {
+        success: function(res) {
           var lat = res.latitude;
           var log = res.longitude;
           var point_id = getApp().globalData.rentalNo;
@@ -240,11 +229,9 @@ Page({
             url: "http://localhost:8888/rental/save",
             method: 'POST',
             data: {
-              point_id: point_id,
               location: [log, lat]
             },
-            success: function () {
-              getApp().globalData.rentalNo = point_id + 1;
+            success: function() {
               findRentals(that, log, lat);
             }
           })
@@ -261,6 +248,13 @@ Page({
     if (e.controlId == 7) {
       //个人中心
       console.log("点击7控件，用户个人中心")
+    }
+    if (e.controlId == 8) {
+      //个人中心
+      console.log("点击8控件，预约租车")
+      wx.navigateTo({
+        url: '../reservation/reservation'
+      });
     }
 
 
@@ -372,8 +366,8 @@ function getPosition(that) {
 function scanCode() {
   wx.scanCode({
     success: function(res) {
-      var bikeNo = res.result;
-      console.log(bikeNo);
+      var vehicleNo = res.result;
+      console.log(vehicleNo);
       var openid = wx.getStorageSync('openid');
       wx.request({
         url: 'http://localhost:8888/vehicle/unlock',
@@ -383,14 +377,20 @@ function scanCode() {
         },
         data: {
           id: openid,
-          bikeNo: bikeNo
+          vehicleNo: vehicleNo
         },
         success: function(res) {
           console.log(res);
-          wx.navigateTo({
-            url: '../billing/billing?bikeNo=' + bikeNo
-
-          });
+          if (res.data == "fail") {
+            wx.showModal({
+              title: '提示',
+              content: '这辆车您暂时不能使用'
+            })
+          } else {
+            wx.navigateTo({
+              url: '../billing/billing?bikeNo=' + vehicleNo
+            });
+          }
         }
 
       })
@@ -400,5 +400,4 @@ function scanCode() {
 
 function moveCenter(that) {
   that.mapCtx.moveToLocation();
-  console.log("asdfasdfasdf")
 }
