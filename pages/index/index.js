@@ -186,27 +186,8 @@ Page({
     }
     if (e.controlId == 3) {
       console.log("点击3控件，扫码开锁")
-      //获取全局变量中的status属性值
-      var status = getApp().globalData.status;
-      if (status == 0) {
-        console.log("用户状态为0，需要注册")
-        //跳转到注册页面
-        wx.navigateTo({
-          url: '../register/register',
-        });
-      } else if (status == 1) {
-        console.log("用户状态为1，需要充值")
-        wx.navigateTo({
-          url: '../deposit/deposit',
-        });
-      } else if (status == 2) {
-        console.log("用户状态为2，需要实名认证")
-        wx.navigateTo({
-          url: '../identify/identify',
-        });
-      } else if (status == 3) {
-        console.log("用户状态为3，已通过校验")
-        scanCode()
+      if(checkUserStatus()){
+        scanCode();
       }
     }
 
@@ -252,9 +233,11 @@ Page({
     if (e.controlId == 8) {
       //个人中心
       console.log("点击8控件，预约租车")
-      wx.navigateTo({
-        url: '../reservation/reservation'
-      });
+      if(checkUserStatus()){
+        wx.navigateTo({
+          url: '../reservation/reservation'
+        });
+      }
     }
 
 
@@ -300,7 +283,30 @@ function findRentals(that, log, lat) {
     }
   })
 }
-
+function checkUserStatus(){
+  //获取全局变量中的status属性值
+  var status = getApp().globalData.status;
+  if (status == 0) {
+    console.log("用户状态为0，需要注册")
+    //跳转到注册页面
+    wx.navigateTo({
+      url: '../register/register',
+    });
+  } else if (status == 1) {
+    console.log("用户状态为1，需要充值")
+    wx.navigateTo({
+      url: '../deposit/deposit',
+    });
+  } else if (status == 2) {
+    console.log("用户状态为2，需要实名认证")
+    wx.navigateTo({
+      url: '../identify/identify',
+    });
+  } else if (status == 3) {
+    console.log("用户状态为3，已通过校验")
+    return true;
+  }
+}
 function findBikes(that, log, lat) {
   //请求后端数据
   wx.request({
