@@ -22,6 +22,8 @@ Page({
         success: function(res) {
           longtitude = res.longitude;
           latitude = res.latitude;
+          getApp().globalData.log=longtitude;
+          getApp().globalData.lat=latitude;
           location = [longtitude, latitude];
           //保存位置信息到本机
           var history = wx.getStorageSync("historyLocations");
@@ -56,14 +58,6 @@ Page({
         }
       };
     }, 1000)
-    //改变单车的状态
-    var params = {
-      url: 'bike/status',
-      method: 'post',
-      data: {
-        id: options.bikeNo
-      }
-    };
     wx.setStorageSync('time', true);
     // 获取车牌号，设置定时器
     this.setData({
@@ -92,6 +86,7 @@ Page({
   },
   moveToIndex: function() {
     var flag = this.data.isStop
+    console.log(flag)
     if (flag) {
       wx.navigateTo({
         url: '../index/index',
@@ -140,16 +135,58 @@ function endRiderecord(that) {
   clearInterval(that.data.timer);
   that.timer = "";
   that.setData({
-    billing: "本次骑行耗时",
+    billing: "本次用车耗时",
     disabled: true
   });
 
-  //发送历史位置记录到后端
-  /**
-  setTimeout(()=>{
-    wx.navigateTo({
-      url: '../pay/pay'
-    });
-  },2000);
-  */
+
+  var openid = wx.getStorageSync('openid');
+  wx.request({
+    url: 'http://localhost:8888/vehicle/lock',
+    method: 'POST',
+    header: {
+      'content-type': 'application/x-www-form-urlencoded'
+    },
+    data: {
+      userId: openid,
+      longitude: getApp().globalData.log,
+      latitude: getApp().globalData.lat
+    },
+    success: function (res) {
+      console.log(res);
+      var data = res.data.data;
+      if(res.data.code!=20000){
+        wx.showToast({
+          title: '还车失败，请联系客服！',
+          icon: 'none',
+          duration: 2000
+        })
+        return;
+      }
+      wx.showModal({
+        title: '还车成功',
+        content: '本次费用为' + data.cost + '，账号余额为' + data.balence,
+        success: function(res){
+          if(res.confirm){
+            console.log(data)
+            if (data.toPay == "true") {
+              wx.showModal({
+                title: '微信支付',
+                content: '你需要微信支付费用',
+                success: function(r){
+                  // console.log(r)
+                  if(r.confirm){
+                    wx.navigateTo({
+                      url: '../index/index',
+                    })
+                  }
+                }
+              })
+            }
+          }
+        }
+      })
+
+    }
+  })
 }
