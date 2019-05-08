@@ -13,8 +13,10 @@
 	"compileType": "miniprogram",
 	"libVersion": "2.0.4",
 	"appid": "wxe70839e213bc86f3",
-	"projectname": "veng_bike",
+	"projectname": "veng_bike_wx_client",
 	"isGameTourist": false,
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,

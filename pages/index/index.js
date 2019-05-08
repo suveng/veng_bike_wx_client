@@ -228,7 +228,11 @@ Page({
     }
     if (e.controlId == 7) {
       //个人中心
-      console.log("点击7控件，用户个人中心")
+      console.log("点击7控件，用户个人中心");
+      wx.navigateTo({
+        url: '../me/me',
+      });
+
     }
     if (e.controlId == 8) {
       //个人中心

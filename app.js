@@ -42,7 +42,8 @@ App({
     userInfo: null,
     log:20,
     lat:20,
-    phoneNum:0
+    phoneNum:0,
+    user: null,
   },
   getUserInfo: function(cb) {
     var that = this
@@ -68,11 +69,33 @@ function getInfoByOpenid(openid) {
     url: "http://localhost:8888/phoneNum/" + openid,
     success: function(res) {
       var user = res.data;
+      console.log("[user]:当前用户的信息为:",user);
       if (user) {
         var phoneNum = user.phoneNum;
         var status = user.status;
         getApp().globalData.phoneNum = phoneNum;
         getApp().globalData.status = status;
+        function getInfoByOpenid(openid) {
+  wx.request({
+    url: "http://localhost:8888/phoneNum/" + openid,
+    success: function(res) {
+      var user = res.data;
+      console.log("[user]:当前用户的信息为:",user);
+      if (user) {
+        var phoneNum = user.phoneNum;
+        var status = user.status;
+        getApp().globalData.phoneNum = phoneNum;
+        getApp().globalData.status = status;
+        getApp().globalData.user = user;
+        //把用户的openid保存到本地
+        wx.setStorageSync('phoneNum', phoneNum);
+        wx.setStorageSync('status', status);
+      }
+      console.log("getuserinfo over!");
+      
+    }
+  })
+}
         //把用户的openid保存到本地
         wx.setStorageSync('phoneNum', phoneNum);
         wx.setStorageSync('status', status);

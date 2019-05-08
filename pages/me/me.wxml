@@ -1,0 +1,75 @@
+        <form bindsubmit="formSubmit">
+        
+          
+
+          <view class="weui-cells">  
+            <view class="weui-cell weui-cell_input weui-cell_vcode">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">id:</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" name="id" value="{{user.id}}" disabled="disabled" />
+                </view>
+            </view>
+          </view>
+
+          <view class="weui-cells">  
+            <view class="weui-cell weui-cell_input weui-cell_vcode">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">余额:</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" name="balance" value="{{user.balance}}" disabled="disabled" />
+                </view>
+            </view>
+          </view>                                        
+          
+
+          <view class="weui-cells">  
+            <view class="weui-cell weui-cell_input weui-cell_vcode">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">押金:</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" name="deposit" value="{{user.deposit}}" disabled="disabled" />
+                </view>
+            </view>
+          </view>
+
+          <view class="weui-cells">  
+            <view class="weui-cell weui-cell_input weui-cell_vcode">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">电话号码:</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" name="phoneNum" value="{{user.phoneNum}}" disabled="disabled" />
+                </view>
+            </view>
+          </view>
+
+          <view class="weui-cells">  
+            <view class="weui-cell weui-cell_input weui-cell_vcode">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">姓名:</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" name="name" value="{{user.name}}" disabled="disabled" />
+                </view>
+            </view>
+          </view>
+
+          <view class="weui-cells">  
+            <view class="weui-cell weui-cell_input weui-cell_vcode">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">身份证号码:</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" name="idNum" value="{{user.idNum}}" disabled="disabled" />
+                </view>
+            </view>
+          </view>
+
+          <view class="weui-btn-area">
+              <button class="weui-btn" type="primary" bindtap="gotoIndex">返回</button>
+          </view>
+      </form>
