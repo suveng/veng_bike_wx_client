@@ -182,6 +182,10 @@ function endRiderecord(that) {
                   }
                 }
               })
+            }else{
+              wx.navigateTo({
+                url: '../index/index',
+              })
             }
           }
         }
